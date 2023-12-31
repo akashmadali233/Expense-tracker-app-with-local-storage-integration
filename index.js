@@ -4,7 +4,7 @@ function handleFormSubmit(event) {
     const description = document.getElementById("des").value;
     const category = document.getElementById("category").value;
 
-    const expense = {     //objext collection
+    const expense = {     
         id: Date.now(),
         expenseAmount,
         description,
