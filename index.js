@@ -1,22 +1,36 @@
 function handleFormSubmit(event) {
+    // Prevent the default form submission behavior
     event.preventDefault();
+
+    // Retrieve values from form inputs
     const expenseAmount = document.getElementById("amount").value;
     const description = document.getElementById("des").value;
     const category = document.getElementById("category").value;
 
-    const expense = {     //objext collection
+    // Create an expense object using thse retrieved values
+    const expense = {
         id: Date.now(),
         expenseAmount,
         description,
         category
     };
+
+    // Save the expense to local storage using the saveExpense function
     saveExpense(expense);
+
+    // Call the add function 
     add();
 }
 
+
 function saveExpense(expense) {
+    // Step 1: Retrieve existing expense array from local storage or initialize an empty array
     let myArray = JSON.parse(localStorage.getItem('my-array')) || [];
+
+    // Step 2: Add the new expense to the array
     myArray.push(expense);
+
+     // Step 3: Save the updated array back to local storage
     localStorage.setItem('my-array', JSON.stringify(myArray));
 }
 
@@ -78,7 +92,7 @@ function saveEdit(id) {
         expenseAmount: editedAmount,
         description: editedDescription,
         category: editedCategory
-    } : expense));
+    } : expense));  
 
     // Update local storage
     localStorage.setItem('my-array', JSON.stringify(myArray));
@@ -95,13 +109,15 @@ function cancelEdit() {
 function add() {
     const myArray = JSON.parse(localStorage.getItem('my-array')) || [];
     const ul = document.getElementById("unorderList");
+
+    // Step 3: Clear the existing content of the <ul> element
     ul.innerHTML = '';
 
     if (myArray) {
         myArray.forEach(expense => {
             const li = document.createElement("li");
             li.id = `expense-${expense.id}`;
-
+            
             const deleteButton = document.createElement("button");
             deleteButton.textContent = 'Delete';
             deleteButton.type = "button";
@@ -116,9 +132,13 @@ function add() {
                 editExpense(expense.id);
             });
 
-            li.textContent = `${expense.expenseAmount}, ${expense.description}, ${expense.category}`;
+            li.textContent = `${expense.expenseAmount} - ${expense.description} - ${expense.category}`;
+
+            //Append the 'Delete' and 'Edit' buttons to the <li> element
             li.appendChild(deleteButton);
             li.appendChild(editButton);
+
+            // Append the <li> element to the <ul> element
             ul.appendChild(li);
         });
     }
@@ -126,3 +146,4 @@ function add() {
 
 // Call add() on page load to display stored expenses
 window.onload = add;
+
